@@ -1,0 +1,105 @@
+日期
+修改存取种类
+添加金钱种类
+消费种类
+金额
+备注
+
+名称
+
+
+finance.db
+
+
+finance_table:
++------------+------+-----------+----------+------------+-------+-----+
+| finance_id | date | in_out_id | money_id | consume_id | money |note |
++------------+------+-----------+----------+------------+-------+-----+
+
+
+in_out_tabel:
++-----------+------+
+| in_out_id | name |
++-----------+------+
+
+money_table:
++----------+------+-------+
+| money_id | name | money |
++----------+------+-------+
+
+consume_table:
++------------+------+
+| consume_id | name |
++------------+------+
+
+
+CREATE TABLE finance_table
+(
+    finance_id  INTEGER     PRIMARY KEY,
+    date        TEXT        NOT NULL,
+    in_out_id   INTEGER     NOT NULL,
+    money_id    INTEGER     NOT NULL,
+    consume_id  INTEGER     NOT NULL,
+    money       REAL        NOT NULL,
+    note        TEXT,
+    FOREIGN KEY(in_out_id)  REFERENCES in_out_table(in_out_id),
+    FOREIGN KEY(money_id)   REFERENCES money_table(money_id),
+    FOREIGN KEY(consume_id) REFERENCES consume_table(consume_id)
+);
+
+
+CREATE TABLE in_out_table
+(
+    in_out_id   INTEGER     PRIMARY KEY,
+    name        TEXT        NOT NULL,
+    operator    TEXT        NOT NULL
+);
+
+
+CREATE TABLE money_table
+(
+    money_id    INTEGER     PRIMARY KEY,
+    name        TEXT        NOT NULL,
+    money       REAL        NOT NULL
+);
+
+
+CREATE TABLE consume_table
+(
+    consume_id  INTEGER     PRIMARY KEY,
+    name        TEXT        NOT NULL
+);
+
+
+
+INSERT INTO in_out_table (name, operator) values ("存入", "+");
+INSERT INTO in_out_table (name, operator) values ("取出", "-");
+INSERT INTO in_out_table (name, operator) values ("消费", "-");
+
+INSERT INTO money_table (name, money) values ("现金", 100.00);
+INSERT INTO money_table (name, money) values ("建行卡", 100.00);
+INSERT INTO money_table (name, money) values ("交通卡", 100.00);
+
+INSERT INTO consume_table (name) values ("书籍");
+INSERT INTO consume_table (name) values ("车费");
+INSERT INTO consume_table (name) values ("三餐");
+INSERT INTO consume_table (name) values ("零食");
+
+INSERT INTO finance_table (in_out_id, money_id, consume_id, money, note)
+    values (3, 3, 2, 1.4, "去玩");
+INSERT INTO money_table (in_out_id, money_id, consume_id, money, note)
+    values (3, 3, 2, 1.4, "去玩");
+
+
+
+Joinning Tables:
+sqlite> SELECT finance_table.date, in_out_table.name
+   ...> FROM finance_table, in_out_table
+   ...> WHERE finance_table.in_out_id=in_out_table.in_out_id;
+
+
+Delete:
+DELETE FROM table WHERE 
+
+Update:
+UPDATE table SET ... WHERE ...
