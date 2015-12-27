@@ -1,0 +1,2 @@
+# MyQtProject
+Learning Qt Programming
