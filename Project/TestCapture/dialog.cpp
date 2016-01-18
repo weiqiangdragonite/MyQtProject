@@ -1,6 +1,7 @@
 /*
  * Qt调用摄像头（截取并保存图片）
  * 一去二三里 http://blog.sina.com.cn/s/blog_a6fb6cc90101g2mg.html
+ * http://blog.csdn.net/zhx6044/article/details/8825519
  *
  * Qt如何调用系统摄像设备进行显示、截图、录制？
  * QCamera：系统摄像设备（摄像头）
@@ -20,11 +21,13 @@
 #include <QCamera>
 #include <QCameraViewfinder>
 #include <QCameraImageCapture>
+#include <QCameraInfo>
 #include <QPixmap>
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QDebug>
 
 
 Dialog::Dialog(QWidget *parent) :
@@ -32,6 +35,25 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+
+    /*
+    // show camera info
+    QList<QCameraInfo> info_list = QCameraInfo::availableCameras();
+    foreach (const QCameraInfo &info, info_list) {
+        qDebug() << "dev name:" << info.deviceName();
+        qDebug() << "description:" << info.description();
+
+        if (info.position() == QCamera::FrontFace)
+            qDebug() << "The camera is on the front face of the hardware system.";
+        else if (info.position() == QCamera::BackFace)
+            qDebug() << "The camera is on the back face of the hardware system.";
+        else if (info.position() == QCamera::UnspecifiedPosition)
+            qDebug() << "The camera position is unspecified or unknown.";
+
+        qDebug() << "The camera sensor orientation is " << info.orientation() << " degrees.";
+    }
+    */
+
 
 
     camera = new QCamera;
@@ -89,8 +111,10 @@ void Dialog::capture_image()
 void Dialog::save_image()
 {
     const QPixmap *pix = display_label->pixmap();
-    if (pix)
-        pix->save("D:\\1.jpg");
+    if (pix) {
+        qDebug() << "true";
+        pix->save("1.jpg");
+    }
 }
 
 void Dialog::display_image(int id, const QImage &preview)
